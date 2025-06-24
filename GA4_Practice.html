@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GA4 Tracking Practice - Sai</title>
+
+  <script type="text/javascript" charset="UTF-8" src="//cdn.cookie-script.com/s/a635857c6c07ce7545e291d9d7b3fced.js"></script>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-59SFB4CR');</script>
+  <!-- End Google Tag Manager -->
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-06WT6K9ZEX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-06WT6K9ZEX');
+  </script>
+  
+  <style>
+    *{
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Sefoe UI', sans-serif;
+      background:#f6f8fa;
+      padding: 2rem;
+      color:#333;
+    }
+    h1, h2{
+      color:#222;
+      margin-bottom:0.5rem;
+    }
+
+    button{
+      background-color:#007bff ;
+      border:none;
+      color:white;
+      padding:0.75rem 1.5rem;
+      margin:0.5rem 0;
+      border-radius:6px;
+      cursor:pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover{
+      background-color:#0056b3;
+    }
+
+    a{
+      display: inline-block;
+      margin:0.5rem 0;
+      color:#0077cc;
+      text-decoration:none;
+      font-weight:500;
+    }
+
+    a:hover{
+      text-decoration:underline;
+    }
+
+    form{
+      margin-top: 1.5rem;
+      padding:1rem;
+      background-color:#fff;
+      border-radius:8px;
+      box-shadow:0 1px 3px rgba(0,0,0,0.1);
+      max-width:400px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:0.5rem;
+      font-weight:600;
+    }
+
+    input[type="email"]{
+      padding:0,6rem;
+      width:100%;
+      margin-bottom:1rem;
+      border:1px solid #ccc;
+      border-radius:4px;
+      font-size:15px;
+    }
+
+    #more{
+      margin-top:3rem;
+      padding:1rem;
+      background:#e9f5ff;
+      border-left:4px solid #007bff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-59SFB4CR"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  <h1>GA4 Event Tracking Practice</h1>
+  <p>Test different interactions and track them in GA4.</p>
+
+  <h2>Button Clicks</h2>
+  <button onclick="trackButton('primary_cta')">Primary CTA</button>
+  <button onclick="trackButton('secondary_cta')">Secondary CTA</button>
+
+  <h2>Link Clicks</h2>
+  <a href="https://www.example.com" target="_blank" onclick="trackLinkClick('Example Link')">Visit Example.com</a>
+  <a href="#more" onclick="trackLinkClick('Internal Section')">Jump to More Info Section</a>
+
+  <h2>Form Submission</h2>
+  <form onsubmit="trackFormSubmit(event)">
+    <label for="email">Email:</label>
+    <input type="email" id="email" required />
+    <button type="submit">Subscribe</button>
+  </form>
+   <button id="buy-now" data-product-id="567" data-category="excavator">Buy Now</button>
+   <button id="download-pdf">Download PDF</button>
+
+  <h2 id="more">More Info Section</h2>
+  <p>This section was linked internally. Check if the internal link click is tracked.</p>
+  
+  <script>
+  document.getElementById('buy-now').addEventListener('click', function () {
+    const productId = this.getAttribute('data-product-id');
+    const category = this.getAttribute('data-category');
+
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      'event': 'buy_button_clicked',
+      'productId': productId,
+      'category': category
+    });
+  });
+  </script>
+
+  <script>
+  document.getElementById('download-pdf').addEventListener('click', function () {
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      event: 'pdf_downloaded',
+      fileName: 'brochure.pdf',
+      userRole: 'guest'
+    });
+  });
+  </script>
+  <script>
+  setTimeout(function () {
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+      event: 'time_on_page',
+      timeSpent: 10
+    });
+  }, 10000); // 10 seconds
+  </script>
+
+
+
+  <script>
+    function trackButton(buttonType) {
+      console.log("Sending event:", buttonType);
+      gtag('event', 'button_click', {
+        'button_type': buttonType,
+        'page_location': window.location.href
+      });
+      alert(`Event for '${buttonType}' sent!`);
+    }
+
+    function trackLinkClick(linkLabel) {
+      console.log("Sending link click event:", linkLabel);
+      gtag('event', 'link_click', {
+        'link_label': linkLabel,
+        'page_location': window.location.href
+      });
+    }
+
+    function trackFormSubmit(event) {
+      event.preventDefault(); // Prevent real submission for test
+      const email = document.getElementById('email').value;
+      gtag('event', 'form_submit', {
+        'form_type': 'subscription',
+        'email_entered': email,
+        'page_location': window.location.href
+      });
+      alert("Form submitted event sent!");
+    }
+  </script>
+  <div class="images">
+  <img src="download.png" alt="GA4">
+  <img src="images.png" alt="GTM">
+  </div>
+</body>
+</html>
